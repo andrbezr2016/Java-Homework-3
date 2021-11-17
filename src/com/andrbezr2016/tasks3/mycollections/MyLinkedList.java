@@ -53,7 +53,7 @@ public class MyLinkedList<E> implements ILinkedList<E> {
     public void clear() {
         Node<E> currNode = head;
         while (currNode != null) {
-            Node<E> temp = head.nextNode;
+            Node<E> temp = currNode.nextNode;
             currNode.element = null;
             currNode.prevNode = null;
             currNode.nextNode = null;

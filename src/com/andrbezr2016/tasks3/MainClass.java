@@ -5,16 +5,60 @@ import com.andrbezr2016.tasks3.mycollections.MyLinkedList;
 import java.util.Arrays;
 import java.util.LinkedList;
 
-public class Main {
+public class MainClass {
     public static void main(String[] args) {
         testMyLinkedList();
-        testComparison();
+        testLinkedLists();
+        ComparisonCollections comparisonCollections = new ComparisonCollections();
+        comparisonCollections.testList(1_000_000);
+        comparisonCollections.testSet(1_000_000);
+        comparisonCollections.testMap(1_000_000);
     }
 
-    public static void testComparison() {
-        MyLinkedList<String> myLinkedList = new MyLinkedList<>();
-        LinkedList<String> linkedList = new LinkedList<>();
+    public static void testLinkedLists() {
+        int numberOfTests = 1_000_000;
+        long timeStart;
+        long timeElapsed;
 
+        // 1 MyLinkedList
+        MyLinkedList<Integer> myLinkedList = new MyLinkedList<>();
+        // Test add
+        timeStart = System.nanoTime();
+        for (int i = 0; i < numberOfTests; i++) {
+            myLinkedList.add(10);
+        }
+        timeElapsed = System.nanoTime() - timeStart;
+        System.out.println("Add time to MyLinkedList: " + timeElapsed / 1_000_000 + "ms");
+        // Test get
+        timeStart = System.nanoTime();
+        myLinkedList.get(numberOfTests / 2);
+        timeElapsed = System.nanoTime() - timeStart;
+        System.out.println("Get time to MyLinkedList: " + timeElapsed / 1_000_000 + "ms");
+        // Test clear
+        timeStart = System.nanoTime();
+        myLinkedList.clear();
+        timeElapsed = System.nanoTime() - timeStart;
+        System.out.println("Clear time to MyLinkedList: " + timeElapsed / 1_000_000 + "ms");
+
+        // 2 LinkedList
+        LinkedList<Integer> linkedList = new LinkedList<>();
+        // Test add
+        timeStart = System.nanoTime();
+        for (int i = 0; i < numberOfTests; i++) {
+            linkedList.add(10);
+        }
+        timeElapsed = System.nanoTime() - timeStart;
+        System.out.println("Add time to LinkedList: " + timeElapsed/1_000_000 + "ms");
+        // Test get
+        timeStart = System.nanoTime();
+        linkedList.get(numberOfTests/2);
+        timeElapsed = System.nanoTime() - timeStart;
+        System.out.println("Get time to LinkedList: " + timeElapsed/1_000_000 + "ms");
+        // Test clear
+        timeStart = System.nanoTime();
+        linkedList.clear();
+        timeElapsed = System.nanoTime() - timeStart;
+        System.out.println("Clear time to LinkedList: " + timeElapsed/1_000_000 + "ms");
     }
 
     public static void testMyLinkedList() {
