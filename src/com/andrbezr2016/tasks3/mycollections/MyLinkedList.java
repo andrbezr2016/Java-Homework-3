@@ -155,13 +155,14 @@ public class MyLinkedList<E> implements ILinkedList<E> {
 
     @Override
     @SuppressWarnings("unchecked")
-    public E[] toArray(E[] a) {
+    public <T> T[] toArray(T[] a) {
         if (a.length != size) {
-            a = (E[]) java.lang.reflect.Array.newInstance(a.getClass().getComponentType(), size);
+            a = (T[]) java.lang.reflect.Array.newInstance(a.getClass().getComponentType(), size);
         }
+        Object[] result = a;
         Node<E> currNode = head;
         for (int i = 0; i < size; i++) {
-            a[i] = currNode.element;
+            result[i] = currNode.element;
             currNode = currNode.nextNode;
         }
         return a;
