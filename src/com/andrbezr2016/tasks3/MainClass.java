@@ -1,64 +1,95 @@
 package com.andrbezr2016.tasks3;
 
 import com.andrbezr2016.tasks3.mycollections.MyLinkedList;
+import com.andrbezr2016.tasks3.mytimers.MyTimer;
 
 import java.util.Arrays;
 import java.util.LinkedList;
 
 public class MainClass {
     public static void main(String[] args) {
-        testMyLinkedList();
+//        testMyLinkedList();
         testLinkedLists();
-        ComparisonCollections comparisonCollections = new ComparisonCollections();
-        comparisonCollections.testList(1_000_000);
-        comparisonCollections.testSet(1_000_000);
-        comparisonCollections.testMap(1_000_000);
+        System.out.println();
+        testLinkedLists();
+        System.out.println();
+        testLinkedLists();
+        System.out.println();
+        testLinkedLists();
+        System.out.println();
+//        ComparisonCollections comparisonCollections = new ComparisonCollections();
+//        comparisonCollections.testList(1_000_000);
+//        comparisonCollections.testSet(1_000_000);
+//        comparisonCollections.testMap(1_000_000);
     }
 
     public static void testLinkedLists() {
-        int numberOfTests = 1_000_000;
-        long timeStart;
-        long timeElapsed;
-
-        // 1 MyLinkedList
-        MyLinkedList<Integer> myLinkedList = new MyLinkedList<>();
-        // Test add
-        timeStart = System.nanoTime();
-        for (int i = 0; i < numberOfTests; i++) {
-            myLinkedList.add(10);
+        int[] numbersOfTests = new int[]{10_000, 100_000, 1_000_000};
+        int numbersOfTestsLength = numbersOfTests.length;
+        long[] avgAddMyLinkedList = new long[numbersOfTestsLength];
+        long[] avgAddLinkedList = new long[numbersOfTestsLength];
+        long[] avgGetMyLinkedList = new long[numbersOfTestsLength];
+        long[] avgGetLinkedList = new long[numbersOfTestsLength];
+        long[] avgClearMyLinkedList = new long[numbersOfTestsLength];
+        long[] avgClearLinkedList = new long[numbersOfTestsLength];
+        MyTimer myTimer = new MyTimer();
+        MyLinkedList<Integer> myLinkedList;
+        LinkedList<Integer> linkedList;
+        // Test add, get, clear
+        for (int j = 0; j < numbersOfTestsLength; j++) {
+            long avgTimeAdd1 = 0;
+            long avgTimeGet1 = 0;
+            long avgTimeClear1 = 0;
+            long avgTimeAdd2 = 0;
+            long avgTimeGet2 = 0;
+            long avgTimeClear2 = 0;
+            Integer num = 20;
+            // Average time
+            for (int i = 0; i < 1000; i++) {
+                myLinkedList = new MyLinkedList<>();
+                linkedList = new LinkedList<>();
+                // 1 Add
+                myTimer.start();
+                for (int test = 0; test < numbersOfTests[j]; test++) {
+                    myLinkedList.add(num);
+                }
+                avgTimeAdd1 += myTimer.end();
+                // Get
+                myTimer.start();
+                myLinkedList.get(numbersOfTests[j] / 2);
+                avgTimeGet1 += myTimer.end();
+                // Clear
+                myTimer.start();
+                myLinkedList.clear();
+                avgTimeClear1 += myTimer.end();
+                // 2 Add
+                myTimer.start();
+                for (int test = 0; test < numbersOfTests[j]; test++) {
+                    linkedList.add(num);
+                }
+                avgTimeAdd2 += myTimer.end();
+                // Get
+                myTimer.start();
+                linkedList.get(numbersOfTests[j] / 2);
+                avgTimeGet2 += myTimer.end();
+                // Clear
+                myTimer.start();
+                linkedList.clear();
+                avgTimeClear2 += myTimer.end();
+            }
+            avgAddMyLinkedList[j] = avgTimeAdd1 / 100;
+            avgAddLinkedList[j] = avgTimeAdd2 / 100;
+            avgGetMyLinkedList[j] = avgTimeGet1 / 100;
+            avgGetLinkedList[j] = avgTimeGet2 / 100;
+            avgClearMyLinkedList[j] = avgTimeClear1 / 100;
+            avgClearLinkedList[j] = avgTimeClear2 / 100;
         }
-        timeElapsed = System.nanoTime() - timeStart;
-        System.out.println("Add time to MyLinkedList: " + timeElapsed / 1_000_000 + "ms");
-        // Test get
-        timeStart = System.nanoTime();
-        myLinkedList.get(numberOfTests / 2);
-        timeElapsed = System.nanoTime() - timeStart;
-        System.out.println("Get time to MyLinkedList: " + timeElapsed / 1_000_000 + "ms");
-        // Test clear
-        timeStart = System.nanoTime();
-        myLinkedList.clear();
-        timeElapsed = System.nanoTime() - timeStart;
-        System.out.println("Clear time to MyLinkedList: " + timeElapsed / 1_000_000 + "ms");
-
-        // 2 LinkedList
-        LinkedList<Integer> linkedList = new LinkedList<>();
-        // Test add
-        timeStart = System.nanoTime();
-        for (int i = 0; i < numberOfTests; i++) {
-            linkedList.add(10);
-        }
-        timeElapsed = System.nanoTime() - timeStart;
-        System.out.println("Add time to LinkedList: " + timeElapsed/1_000_000 + "ms");
-        // Test get
-        timeStart = System.nanoTime();
-        linkedList.get(numberOfTests/2);
-        timeElapsed = System.nanoTime() - timeStart;
-        System.out.println("Get time to LinkedList: " + timeElapsed/1_000_000 + "ms");
-        // Test clear
-        timeStart = System.nanoTime();
-        linkedList.clear();
-        timeElapsed = System.nanoTime() - timeStart;
-        System.out.println("Clear time to LinkedList: " + timeElapsed/1_000_000 + "ms");
+        System.out.println("MyLinkedList add 10_000, 100_000, 1_000_000 over time: " + Arrays.toString(avgAddMyLinkedList));
+        System.out.println("LinkedList add 10_000, 100_000, 1_000_000 over time: " + Arrays.toString(avgAddLinkedList));
+        System.out.println("MyLinkedList get 10_000, 100_000, 1_000_000 over time: " + Arrays.toString(avgGetMyLinkedList));
+        System.out.println("LinkedList get 10_000, 100_000, 1_000_000 over time: " + Arrays.toString(avgGetLinkedList));
+        System.out.println("MyLinkedList clear 10_000, 100_000, 1_000_000 over time: " + Arrays.toString(avgClearMyLinkedList));
+        System.out.println("LinkedList clear 10_000, 100_000, 1_000_000 over time: " + Arrays.toString(avgClearLinkedList));
     }
 
     public static void testMyLinkedList() {
