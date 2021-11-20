@@ -1,116 +1,125 @@
 package com.andrbezr2016.tasks3;
 
-import com.andrbezr2016.tasks3.mycollections.ILinkedList;
+import com.andrbezr2016.tasks3.comparisons.ComparisonCollections;
 import com.andrbezr2016.tasks3.mycollections.MyLinkedList;
 import com.andrbezr2016.tasks3.mytimers.MyTimer;
 
 import java.util.Arrays;
 import java.util.LinkedList;
-import java.util.List;
 
 public class MainClass {
     public static void main(String[] args) {
-//        testMyLinkedList();
+        testMyLinkedList();
 //        testLinkedLists();
-        ComparisonCollections comparisonCollections = new ComparisonCollections();
-        comparisonCollections.testList();
+//        ComparisonCollections comparisonCollections = new ComparisonCollections();
+//        comparisonCollections.testList();
 //        comparisonCollections.testSet();
 //        comparisonCollections.testMap();
     }
 
     public static void testLinkedLists() {
-        MyTimer myTimer = new MyTimer();
+        int numberOfTestsAvg = 10;
         int[] numbersOfTests = new int[]{10_000, 100_000, 1_000_000};
         int numbersOfTestsLength = numbersOfTests.length;
-        int avgTests = 1000;
-
-        long[] avgAddMyLinkedList = new long[numbersOfTestsLength];
-        long[] avgAddLinkedList = new long[numbersOfTestsLength];
-
-        long[] avgGetMyLinkedList = new long[numbersOfTestsLength];
-        long[] avgGetLinkedList = new long[numbersOfTestsLength];
-
-        long[] avgRemoveMyLinkedList = new long[numbersOfTestsLength];
-        long[] avgRemoveLinkedList = new long[numbersOfTestsLength];
-
-        long[] avgClearMyLinkedList = new long[numbersOfTestsLength];
-        long[] avgClearLinkedList = new long[numbersOfTestsLength];
-
-        ILinkedList<Integer> myLinkedList;
-        List<Integer> linkedList;
-        // Test add, get, remove, clear
-        for (int j = 0; j < numbersOfTestsLength; j++) {
-            long avgTimeAdd1 = 0;
-            long avgTimeGet1 = 0;
-            long avgTimeRemove1 = 0;
-            long avgTimeClear1 = 0;
-            long avgTimeAdd2 = 0;
-            long avgTimeGet2 = 0;
-            long avgTimeRemove2 = 0;
-            long avgTimeClear2 = 0;
-            Integer num = 20;
-            // Average time
-            for (int i = 0; i < avgTests; i++) {
-                myLinkedList = new MyLinkedList<>();
-                linkedList = new LinkedList<>();
-                // 1 Add
-                myTimer.start();
-                for (int test = 0; test < numbersOfTests[j]; test++) {
-                    myLinkedList.add(num);
-                }
-                avgTimeAdd1 += myTimer.end();
-                // Remove
-                myTimer.start();
-                myLinkedList.remove(numbersOfTests[j] / 2);
-                avgTimeRemove1 += myTimer.end();
-                // Get
-                myTimer.start();
-                myLinkedList.get(numbersOfTests[j] / 2);
-                avgTimeGet1 += myTimer.end();
-                // Clear
-                myTimer.start();
-                myLinkedList.clear();
-                avgTimeClear1 += myTimer.end();
-                // 2 Add
-                myTimer.start();
-                for (int test = 0; test < numbersOfTests[j]; test++) {
-                    linkedList.add(num);
-                }
-                avgTimeAdd2 += myTimer.end();
-                // Remove
-                myTimer.start();
-                linkedList.remove(numbersOfTests[j] / 2);
-                avgTimeRemove2 += myTimer.end();
-                // Get
-                myTimer.start();
-                linkedList.get(numbersOfTests[j] / 2);
-                avgTimeGet2 += myTimer.end();
-                // Clear
-                myTimer.start();
-                linkedList.clear();
-                avgTimeClear2 += myTimer.end();
+        MyLinkedList<Integer> myLinkedList = new MyLinkedList<>();
+        LinkedList<Integer> linkedList = new LinkedList<>();
+        long[][] resultsAdd = new long[2][numbersOfTestsLength];
+        long[][] resultsGet = new long[2][numbersOfTestsLength];
+        long[][] resultsIndexOf = new long[2][numbersOfTestsLength];
+        long[][] resultsRemove = new long[2][numbersOfTestsLength];
+        // Test add, indexOf, get, remove
+        for (int i = 0; i < numbersOfTestsLength; i++) {
+            myLinkedList.clear();
+            linkedList.clear();
+            for (int k = 0; k < numbersOfTests[i]; k++) {
+                myLinkedList.add(k);
+                linkedList.add(k);
             }
-            avgAddMyLinkedList[j] = avgTimeAdd1 / avgTests;
-            avgAddLinkedList[j] = avgTimeAdd2 / avgTests;
-            avgGetMyLinkedList[j] = avgTimeGet1 / avgTests;
-            avgGetLinkedList[j] = avgTimeGet2 / avgTests;
-            avgRemoveMyLinkedList[j] = avgTimeRemove1 / avgTests;
-            avgRemoveLinkedList[j] = avgTimeRemove2 / avgTests;
-            avgClearMyLinkedList[j] = avgTimeClear1 / avgTests;
-            avgClearLinkedList[j] = avgTimeClear2 / avgTests;
+            // Test add, get, indexOf, remove
+            for (int j = 0; j < numberOfTestsAvg; j++) {
+                resultsAdd[0][i] += timeAdd(myLinkedList, numbersOfTests[i] / 2, -1);
+                resultsAdd[1][i] += timeAdd(linkedList, numbersOfTests[i] / 2, -1);
+            }
+            for (int j = 0; j < numberOfTestsAvg; j++) {
+                resultsGet[0][i] += timeGet(myLinkedList, numbersOfTests[i] / 2);
+                resultsGet[1][i] += timeGet(linkedList, numbersOfTests[i] / 2);
+            }
+            for (int j = 0; j < numberOfTestsAvg; j++) {
+                resultsIndexOf[0][i] += timeIndexOf(myLinkedList, -1);
+                resultsIndexOf[1][i] += timeIndexOf(linkedList, -1);
+            }
+            for (int j = 0; j < numberOfTestsAvg; j++) {
+                resultsRemove[0][i] += timeRemove(myLinkedList, numbersOfTests[i] / 2);
+                resultsRemove[1][i] += timeRemove(linkedList, numbersOfTests[i] / 2);
+            }
+            for (int j = 0; j < 2; j++) {
+                resultsAdd[j][i] /= numberOfTestsAvg;
+                resultsGet[j][i] /= numberOfTestsAvg;
+                resultsIndexOf[j][i] /= numberOfTestsAvg;
+                resultsRemove[j][i] /= numberOfTestsAvg;
+            }
         }
-        System.out.println("MyLinkedList add 10_000, 100_000, 1_000_000 over time: " + Arrays.toString(avgAddMyLinkedList));
-        System.out.println("LinkedList add 10_000, 100_000, 1_000_000 over time: " + Arrays.toString(avgAddLinkedList));
-
-        System.out.println("MyLinkedList get 10_000, 100_000, 1_000_000 over time: " + Arrays.toString(avgGetMyLinkedList));
-        System.out.println("LinkedList get 10_000, 100_000, 1_000_000 over time: " + Arrays.toString(avgGetLinkedList));
-
-        System.out.println("MyLinkedList remove 10_000, 100_000, 1_000_000 over time: " + Arrays.toString(avgRemoveMyLinkedList));
-        System.out.println("LinkedList remove 10_000, 100_000, 1_000_000 over time: " + Arrays.toString(avgRemoveLinkedList));
-
-        System.out.println("MyLinkedList clear 10_000, 100_000, 1_000_000 over time: " + Arrays.toString(avgClearMyLinkedList));
-        System.out.println("LinkedList clear 10_000, 100_000, 1_000_000 over time: " + Arrays.toString(avgClearLinkedList));
+        System.out.println("Add to MyLinkedList and LinkedList: " + Arrays.deepToString(resultsAdd));
+        System.out.println("Get from MyLinkedList and LinkedList: " + Arrays.deepToString(resultsGet));
+        System.out.println("IndexOf from MyLinkedList and LinkedList: " + Arrays.deepToString(resultsIndexOf));
+        System.out.println("Remove from MyLinkedList and LinkedList: " + Arrays.deepToString(resultsRemove));
         System.out.println("========");
+    }
+
+    private static long timeAdd(MyLinkedList<Integer> myLinkedList, int index, Integer element) {
+        MyTimer myTimer = new MyTimer();
+        myTimer.start();
+        myLinkedList.add(index, element);
+        return myTimer.end();
+    }
+
+    private static long timeAdd(LinkedList<Integer> linkedList, int index, Integer element) {
+        MyTimer myTimer = new MyTimer();
+        myTimer.start();
+        linkedList.add(index, element);
+        return myTimer.end();
+    }
+
+    private static long timeGet(MyLinkedList<Integer> myLinkedList, int index) {
+        MyTimer myTimer = new MyTimer();
+        myTimer.start();
+        myLinkedList.get(index);
+        return myTimer.end();
+    }
+
+    private static long timeGet(LinkedList<Integer> linkedList, int index) {
+        MyTimer myTimer = new MyTimer();
+        myTimer.start();
+        linkedList.get(index);
+        return myTimer.end();
+    }
+
+    private static long timeIndexOf(MyLinkedList<Integer> myLinkedList, Integer element) {
+        MyTimer myTimer = new MyTimer();
+        myTimer.start();
+        myLinkedList.indexOf(element);
+        return myTimer.end();
+    }
+
+    private static long timeIndexOf(LinkedList<Integer> linkedList, Integer element) {
+        MyTimer myTimer = new MyTimer();
+        myTimer.start();
+        linkedList.indexOf(element);
+        return myTimer.end();
+    }
+
+    private static long timeRemove(MyLinkedList<Integer> myLinkedList, int index) {
+        MyTimer myTimer = new MyTimer();
+        myTimer.start();
+        myLinkedList.remove(index);
+        return myTimer.end();
+    }
+
+    private static long timeRemove(LinkedList<Integer> linkedList, int index) {
+        MyTimer myTimer = new MyTimer();
+        myTimer.start();
+        linkedList.remove(index);
+        return myTimer.end();
     }
 
     public static void testMyLinkedList() {
