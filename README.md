@@ -1,10 +1,10 @@
 # 1. Сравнительный анализ производительности MyLinkedList и java.util.LinkedList
 Проведем тесты для 10 000, 100 000 и 1 000 000 элементов в коллекции. Каждый тест повторяем по 10 раз для усреднения результатов.
 В качестве тестов возьмем: 
-1. добавление элемента в середину списка;
-2. возврат элемента по индексу;
-3. поиск элемента;
-4. удаление элемента по индексу.
+1. Добавление элемента в середину списка.
+2. Возврат элемента по индексу.
+3. Поиск элемента.
+4. Удаление элемента по индексу.
 ## Сравнение MyLinkedList и LinkedList
 ![Figure_11](https://github.com/andrbezr2016/Java-Homework-3/raw/main/figures/Figure_11.png)
 ![Figure_12](https://github.com/andrbezr2016/Java-Homework-3/raw/main/figures/Figure_12.png)
@@ -21,6 +21,7 @@ ____
 2. Добавление элемента в начало, середину и конец списка. 
 3. Возврат элемента по индексу из середины списка.
 4. Удаление элемента по индексу из середины списка.
+
 ![Figure_21](https://github.com/andrbezr2016/Java-Homework-3/raw/main/figures/Figure_21.png)
 ![Figure_22](https://github.com/andrbezr2016/Java-Homework-3/raw/main/figures/Figure_22.png)
 ![Figure_23](https://github.com/andrbezr2016/Java-Homework-3/raw/main/figures/Figure_23.png)
@@ -39,6 +40,7 @@ ____
 2. Добавление элемента.
 3. Поиск элемента.
 4. Удаление элемента.
+
 ![Figure_31](https://github.com/andrbezr2016/Java-Homework-3/raw/main/figures/Figure_31.png)
 ![Figure_32](https://github.com/andrbezr2016/Java-Homework-3/raw/main/figures/Figure_32.png)
 ![Figure_33](https://github.com/andrbezr2016/Java-Homework-3/raw/main/figures/Figure_33.png)
@@ -55,6 +57,7 @@ TreeSet используется, когда нужно отсортирован
 2. Добавление пары ключ-значение.
 3. Поиск по ключу.
 4. Удаление по ключу.
+
 ![Figure_41](https://github.com/andrbezr2016/Java-Homework-3/raw/main/figures/Figure_41.png)
 ![Figure_42](https://github.com/andrbezr2016/Java-Homework-3/raw/main/figures/Figure_42.png)
 ![Figure_43](https://github.com/andrbezr2016/Java-Homework-3/raw/main/figures/Figure_43.png)
