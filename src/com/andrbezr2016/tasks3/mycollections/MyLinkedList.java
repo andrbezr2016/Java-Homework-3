@@ -1,6 +1,7 @@
 package com.andrbezr2016.tasks3.mycollections;
 
 import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.NoSuchElementException;
 
 public class MyLinkedList<E> implements ILinkedList<E> {
@@ -37,10 +38,7 @@ public class MyLinkedList<E> implements ILinkedList<E> {
             if (index == 0) {
                 head = new Node<>(element, null, head);
             } else {
-                Node<E> currNode = head;
-                for (int i = 1; i < index; i++) {
-                    currNode = currNode.nextNode;
-                }
+                Node<E> currNode = findNode(index).prevNode;
                 Node<E> newNode = new Node<>(element, currNode, currNode.nextNode);
                 currNode.nextNode.prevNode = newNode;
                 currNode.nextNode = newNode;
@@ -68,10 +66,7 @@ public class MyLinkedList<E> implements ILinkedList<E> {
         if (index >= size || index < 0) {
             throw new IndexOutOfBoundsException("Index mustn't be negative or larger than size!");
         }
-        Node<E> currNode = head;
-        for (int i = 0; i < index; i++) {
-            currNode = currNode.nextNode;
-        }
+        Node<E> currNode = findNode(index);
         return currNode.element;
     }
 
@@ -108,10 +103,7 @@ public class MyLinkedList<E> implements ILinkedList<E> {
             head.nextNode = null;
             head = temp;
         } else {
-            Node<E> currNode = head;
-            for (int i = 0; i < index; i++) {
-                currNode = currNode.nextNode;
-            }
+            Node<E> currNode = findNode(index);
             currNode.prevNode.nextNode = currNode.nextNode;
             currNode.nextNode.prevNode = currNode.prevNode;
             oldElement = currNode.element;
@@ -128,10 +120,7 @@ public class MyLinkedList<E> implements ILinkedList<E> {
         if (index >= size || index < 0) {
             throw new IndexOutOfBoundsException("Index mustn't be negative or larger than size!");
         }
-        Node<E> currNode = head;
-        for (int i = 0; i < index; i++) {
-            currNode = currNode.nextNode;
-        }
+        Node<E> currNode = findNode(index);
         E oldElement = currNode.element;
         currNode.element = element;
         return oldElement;
@@ -156,15 +145,18 @@ public class MyLinkedList<E> implements ILinkedList<E> {
     @Override
     @SuppressWarnings("unchecked")
     public <T> T[] toArray(T[] a) {
-        if (a.length != size) {
+        if (a.length < size)
             a = (T[]) java.lang.reflect.Array.newInstance(a.getClass().getComponentType(), size);
-        }
         Object[] result = a;
         Node<E> currNode = head;
         for (int i = 0; i < size; i++) {
             result[i] = currNode.element;
             currNode = currNode.nextNode;
         }
+
+        if (a.length > size)
+            a[size] = null;
+
         return a;
     }
 
@@ -219,5 +211,21 @@ public class MyLinkedList<E> implements ILinkedList<E> {
             currNode = currNode.nextNode;
         }
         return result.append("]").toString();
+    }
+
+    private Node<E> findNode(int index) {
+        Node<E> currNode;
+        if (index < size / 2) {
+            currNode = head;
+            for (int i = 0; i < index; i++) {
+                currNode = currNode.nextNode;
+            }
+        } else {
+            currNode = tail;
+            for (int i = size - 1; i > index; i--) {
+                currNode = currNode.prevNode;
+            }
+        }
+        return currNode;
     }
 }
