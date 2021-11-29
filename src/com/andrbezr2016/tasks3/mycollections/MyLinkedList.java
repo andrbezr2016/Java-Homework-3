@@ -1,7 +1,6 @@
 package com.andrbezr2016.tasks3.mycollections;
 
 import java.util.Iterator;
-import java.util.LinkedList;
 import java.util.NoSuchElementException;
 
 public class MyLinkedList<E> implements ILinkedList<E> {
